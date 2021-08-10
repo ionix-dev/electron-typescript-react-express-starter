@@ -1,0 +1,20 @@
+{
+	"compilerOptions": {
+		"target": "ES6",
+		"module": "CommonJS",
+		"noImplicitAny": true,
+		"skipLibCheck": true,
+		"sourceMap": false,
+		"outDir": "./",
+		"baseUrl": ".",
+		"jsx": "react",
+		"esModuleInterop": true,
+		"downlevelIteration": true,
+		"experimentalDecorators": true,
+		"paths": {
+			"*": ["node_modules/*"]
+		}
+	},
+	"include": ["compile.ts"],
+	"exclude": ["node_modules"]
+}

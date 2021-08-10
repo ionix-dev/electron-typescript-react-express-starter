@@ -1,0 +1,28 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta charset="UTF-8" />
+		<link rel="stylesheet" href="activation.css" />
+	</head>
+	<body class="wrapper">
+		<div class="form">
+			<h2 class="title">ENTRER VOTRE CLÉ D'ACTIVATION</h2>
+			<div>
+				<p class="label">N° DE SÉRIE DU DISQUE:</p>
+				<p id="disk-serial" class="serial"></p>
+			</div>
+			<div>
+				<label for="activation-key" class="label">CLÉ D'ACTIVATION:</label>
+				<input type="text" id="activation-key" />
+			</div>
+			<span id="activation-result"></span>
+			<div class="buttonWrapper">
+				<button id="quit-button" class="quit">QUITTER</button>
+				<button id="activate-button" class="activate">ACTIVER</button>
+			</div>
+		</div>
+		<script>
+			window.require("./activation");
+		</script>
+	</body>
+</html>

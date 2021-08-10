@@ -1,0 +1,74 @@
+.wrapper {
+	height: 541px;
+	width: 767px;
+	margin: 0px;
+	display: grid;
+	place-items: center;
+	font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", "Roboto",
+		"Oxygen", "Ubuntu", "Cantarell", "Fira Sans", "Droid Sans",
+		"Helvetica Neue", sans-serif;
+	font-size: 16px;
+	color: #4f4898;
+	font-weight: 600;
+}
+.form {
+	padding: 15px;
+	box-shadow: 0px 0px 10px 0px rgba(156, 151, 206, 1);
+	border-radius: 5px;
+	width: 500px;
+}
+.title {
+	font-weight: 600;
+	text-align: center;
+}
+.form > div {
+	margin-bottom: 10px;
+	display: flex;
+	font-size: 0.9rem;
+	align-items: center;
+	width: 100%;
+}
+.label {
+	margin-right: 10px;
+}
+.serial {
+	color: #000000;
+}
+input[type="text"] {
+	font-size: 1.2em;
+	border: 1px solid lightgray;
+	border-radius: 3px;
+	padding: 5px;
+	flex: 1;
+}
+input[type="text"]:focus {
+	outline: none;
+	border-color: #6a63b6;
+	box-shadow: 0 0 3px 0 #6a63b6;
+}
+.buttonWrapper {
+	display: flex;
+	justify-content: flex-end;
+	width: 100%;
+}
+button {
+	border-radius: 3px;
+	border: none;
+	font-size: 0.9em;
+	font-weight: 600;
+	padding: 0.8em;
+	width: 140px;
+	cursor: pointer;
+	box-sizing: border-box;
+}
+.activate {
+	background-color: #6a63b6;
+	color: #ffffff;
+	border: 1px solid #6a63b6;
+	margin-left: 10px;
+}
+.quit {
+	color: #6a63b6;
+	background-color: #ffffff;
+	border: 1px solid #6a63b6;
+}
