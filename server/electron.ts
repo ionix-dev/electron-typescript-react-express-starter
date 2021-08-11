@@ -8,6 +8,6 @@ import v8 from "v8";
 	await import(
 		!app.isPackaged
 			? path.join(__dirname, "./electron/main.js")
-			: path.join(__dirname, "../build/server/electron/main.jsc")
+			: path.join(__dirname, "./electron/main.jsc")
 	);
 })();

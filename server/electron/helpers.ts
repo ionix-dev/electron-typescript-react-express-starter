@@ -2,9 +2,8 @@
 import hddserial from "hddserial";
 import { BrowserWindow, ipcMain, App } from "electron";
 import Store from "electron-store";
-import eccrypto from "eccrypto";
+import jwt from "jsonwebtoken";
 import path from "path";
-import crypto from "crypto";
 
 export const helpers = {
 	/** Extract disk serial key */
@@ -51,7 +50,7 @@ export const helpers = {
 	createActivationWindow: async (
 		app: App,
 		serial: string,
-		_: Buffer,
+		_: string,
 		store: Store
 	) => {
 		const activationWindow = new BrowserWindow({
@@ -70,13 +69,9 @@ export const helpers = {
 		});
 		ipcMain.on("post-activation-key", async (event, activationKey) => {
 			try {
-				const hashedSerial = crypto
-					.createHash("sha256")
-					.update(serial)
-					.digest();
-				await eccrypto.verify(_, hashedSerial, activationKey);
+				jwt.verify(activationKey, _);
 				event.returnValue = true;
-				store.set("activationKey", activationKey);
+				store.set("ActivationKey", activationKey);
 				activationWindow.close();
 			} catch (err) {
 				event.returnValue = false;
