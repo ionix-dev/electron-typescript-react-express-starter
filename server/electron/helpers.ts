@@ -1,17 +1,20 @@
 // @ts-ignore
 import hddserial from "hddserial";
-import { BrowserWindow, ipcMain, App } from "electron";
+import { BrowserWindow, ipcMain, App, dialog } from "electron";
 import Store from "electron-store";
 import jwt from "jsonwebtoken";
 import path from "path";
 
 export const helpers = {
-	/** Extract disk serial key */
+	/** Extract disk serial number */
 	getHddSerial: async () => {
 		return new Promise((resolve, reject) => {
 			hddserial.first((err: any, serial: string) => {
 				if (err) {
-					return reject(err);
+					return reject({
+						msg: "HDD SERIAL NUMBER COULD NOT BE DETECTED.",
+						isSerial: true,
+					});
 				}
 				resolve(serial);
 			});
@@ -19,11 +22,15 @@ export const helpers = {
 	},
 	/** Create main window */
 	createMainWindow: async (app: App) => {
-		await import(
-			!app.isPackaged
-				? path.join(__dirname, "../api/app.js")
-				: path.join(__dirname, "../api/app.jsc")
-		);
+		try {
+			await import(
+				!app.isPackaged
+					? path.join(__dirname, "../api/app.js")
+					: path.join(__dirname, "../api/app.jsc")
+			);
+		} catch (err) {
+			dialog.showErrorBox("ERREUR", "SERVER ENTRY FILE NOT FOUND.");
+		}
 		const mainWindow = new BrowserWindow({
 			title: "STARTER",
 			show: false,
@@ -34,11 +41,15 @@ export const helpers = {
 			},
 		});
 		mainWindow.maximize();
-		await mainWindow.loadURL(
-			!app.isPackaged
-				? `http://localhost:${process.env.PORT}`
-				: `file://${path.join(__dirname, "../../index.html")}`
-		);
+		try {
+			await mainWindow.loadURL(
+				!app.isPackaged
+					? `http://localhost:${process.env.PORT}`
+					: `file://${path.join(__dirname, "../../index.html")}`
+			);
+		} catch (err) {
+			dialog.showErrorBox("ERREUR", "MAIN WINDOW ENTRY FILE NOT FOUND.");
+		}
 		mainWindow.once("ready-to-show", () => {
 			mainWindow.show();
 		});
@@ -54,7 +65,7 @@ export const helpers = {
 		store: Store
 	) => {
 		const activationWindow = new BrowserWindow({
-			title: process.env.ACTIVATION_WINDOW_TITLE,
+			title: "ACTIVATION WINDOW",
 			minimizable: false,
 			maximizable: false,
 			show: true,
@@ -80,14 +91,21 @@ export const helpers = {
 		ipcMain.on("quit", () => {
 			app.quit();
 		});
-		await activationWindow.loadURL(
-			!app.isPackaged
-				? `file://${path.join(
-						__dirname,
-						"../../../public/activation.html"
-				  )}`
-				: `file://${path.join(__dirname, "../../activation.html")}`
-		);
+		try {
+			await activationWindow.loadURL(
+				!app.isPackaged
+					? `file://${path.join(
+							__dirname,
+							"../../../public/activation.html"
+					  )}`
+					: `file://${path.join(__dirname, "../../activation.html")}`
+			);
+		} catch (err) {
+			dialog.showErrorBox(
+				"ERREUR",
+				"ACTIVATION WINDOW ENTRY FILE NOT FOUND."
+			);
+		}
 		activationWindow.once("ready-to-show", () => {
 			activationWindow.show();
 		});

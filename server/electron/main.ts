@@ -10,25 +10,28 @@ const _ = "SECRET";
 
 (async () => {
 	try {
+		await app.whenReady();
 		const { helpers } = await import(
 			!app.isPackaged
 				? path.join(__dirname, "./helpers")
 				: path.join(__dirname, "./helpers.jsc")
 		);
 		const serial = await helpers.getHddSerial();
-		await app.whenReady();
-		console.log("here", store.get("ActivationKey"));
 		if (!store.get("ActivationKey")) {
 			await helpers.createActivationWindow(app, serial, _, store);
 		} else {
-			const activationKey = store.get("ActivationKey") as string;
-			jwt.verify(activationKey, _);
-			await helpers.createMainWindow(app);
-			app.on("activate", async () => {
-				if (!BrowserWindow.getAllWindows().length) {
-					await helpers.createMainWindow(app);
-				}
-			});
+			try {
+				const activationKey = store.get("ActivationKey") as string;
+				jwt.verify(activationKey, _);
+				await helpers.createMainWindow(app);
+				app.on("activate", async () => {
+					if (!BrowserWindow.getAllWindows().length) {
+						await helpers.createMainWindow(app);
+					}
+				});
+			} catch (err) {
+				dialog.showErrorBox("ERREUR", "INVALID ACTIVATION KEY.");
+			}
 		}
 		app.on("window-all-closed", () => {
 			if (process.platform !== "darwin") {
@@ -36,7 +39,9 @@ const _ = "SECRET";
 			}
 		});
 	} catch (err) {
-		console.log(err);
-		dialog.showErrorBox("ERREUR", `${err.code} : ${err.url}`);
+		dialog.showErrorBox(
+			"ERREUR",
+			err.isSerial ? err.msg : "ENTRY FILE NOT FOUND."
+		);
 	}
 })();
