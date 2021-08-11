@@ -21,22 +21,19 @@ const _ = Buffer.from(
 		);
 		const serial = await helpers.getHddSerial();
 		await app.whenReady();
-		if (false) {
+		if (!store.get("ActivationKey")) {
 			await helpers.createActivationWindow(app, serial, _, store);
 		} else {
-			/*
 			const activationKey = Buffer.from(
-				store.get("activationKey") as string,
+				store.get("ActivationKey") as string,
 				"hex"
 			);
-			
 			const hashedSerial = crypto
 				.createHash("sha256")
 				.update(serial)
 				.digest();
 			await eccrypto.verify(_, hashedSerial, activationKey);
-			*/
-			await helpers.createMainWindow(app);
+			//await helpers.createMainWindow(app);
 			app.on("activate", async () => {
 				if (!BrowserWindow.getAllWindows().length) {
 					await helpers.createMainWindow(app);

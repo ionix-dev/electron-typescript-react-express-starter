@@ -20,13 +20,13 @@ export const helpers = {
 	},
 	/** Create main window */
 	createMainWindow: async (app: App) => {
-		const { PORT } = await import(
+		await import(
 			!app.isPackaged
 				? path.join(__dirname, "../api/app.js")
 				: path.join(__dirname, "../api/app.jsc")
 		);
 		const mainWindow = new BrowserWindow({
-			title: process.env.MAIN_WINDOW_TITLE,
+			title: "STARTER",
 			show: false,
 			webPreferences: {
 				devTools: !app.isPackaged,
@@ -38,7 +38,7 @@ export const helpers = {
 		await mainWindow.loadURL(
 			!app.isPackaged
 				? `http://localhost:${process.env.PORT}`
-				: `file://${path.join(__dirname, "../../build/index.html")}`
+				: `file://${path.join(__dirname, "../../index.html")}`
 		);
 		mainWindow.once("ready-to-show", () => {
 			mainWindow.show();
@@ -91,7 +91,7 @@ export const helpers = {
 						__dirname,
 						"../../../public/activation.html"
 				  )}`
-				: `file://${path.join(__dirname, "../../build/activation.html")}`
+				: `file://${path.join(__dirname, "../../activation.html")}`
 		);
 		activationWindow.once("ready-to-show", () => {
 			activationWindow.show();
