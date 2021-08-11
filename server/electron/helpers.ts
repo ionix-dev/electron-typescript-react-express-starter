@@ -22,7 +22,7 @@ export const helpers = {
 	createMainWindow: async (app: App) => {
 		const { PORT } = await import(
 			!app.isPackaged
-				? path.join(__dirname, "../api/app.ts")
+				? path.join(__dirname, "../api/app.js")
 				: path.join(__dirname, "../api/app.jsc")
 		);
 		const mainWindow = new BrowserWindow({
@@ -37,7 +37,7 @@ export const helpers = {
 		mainWindow.maximize();
 		await mainWindow.loadURL(
 			!app.isPackaged
-				? `http://localhost:${PORT}`
+				? `http://localhost:${process.env.PORT}`
 				: `file://${path.join(__dirname, "../../build/index.html")}`
 		);
 		mainWindow.once("ready-to-show", () => {
@@ -87,7 +87,10 @@ export const helpers = {
 		});
 		await activationWindow.loadURL(
 			!app.isPackaged
-				? `file://${path.join(__dirname, "../../public/activation.html")}`
+				? `file://${path.join(
+						__dirname,
+						"../../../public/activation.html"
+				  )}`
 				: `file://${path.join(__dirname, "../../build/activation.html")}`
 		);
 		activationWindow.once("ready-to-show", () => {

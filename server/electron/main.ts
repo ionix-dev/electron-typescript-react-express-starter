@@ -3,7 +3,6 @@ import Store from "electron-store";
 import eccrypto from "eccrypto";
 import crypto from "crypto";
 import path from "path";
-import "dotenv/config";
 //@ts-ignore
 import bytenode from "bytenode";
 
@@ -22,18 +21,21 @@ const _ = Buffer.from(
 		);
 		const serial = await helpers.getHddSerial();
 		await app.whenReady();
-		if (!store.get("activationKey")) {
+		if (false) {
 			await helpers.createActivationWindow(app, serial, _, store);
 		} else {
+			/*
 			const activationKey = Buffer.from(
 				store.get("activationKey") as string,
 				"hex"
 			);
+			
 			const hashedSerial = crypto
 				.createHash("sha256")
 				.update(serial)
 				.digest();
 			await eccrypto.verify(_, hashedSerial, activationKey);
+			*/
 			await helpers.createMainWindow(app);
 			app.on("activate", async () => {
 				if (!BrowserWindow.getAllWindows().length) {
@@ -48,6 +50,6 @@ const _ = Buffer.from(
 		});
 	} catch (err) {
 		console.log(err);
-		dialog.showErrorBox("ERREUR", err);
+		dialog.showErrorBox("ERREUR", `${err.code} : ${err.url}`);
 	}
 })();
