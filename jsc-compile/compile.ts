@@ -20,7 +20,7 @@ function recursive(dir: string) {
 	});
 }
 
-const serverDir = path.join(__dirname, "../server/");
+const serverDir = path.join(__dirname, "../build/server/");
 const files: string[] = [];
 recursive(serverDir);
 

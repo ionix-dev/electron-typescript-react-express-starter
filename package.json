@@ -77,17 +77,17 @@
 		"web-vitals": "^1.0.1"
 	},
 	"scripts": {
-		"front": "cross-env PORT=50501 react-scripts start",
-		"server": "cd server && tsc-watch --project . --outDir ../build/server --onSuccess \"cross-env SERVER_PORT=50500 nodemon ../build/server/api/app.js\"",
+		"front": "react-scripts start",
+		"server": "cd server && tsc-watch --project . --outDir ../build/server --onSuccess \"nodemon ../build/server/api/app.js\"",
 		"web": "concurrently \"yarn server\" \"yarn front\"",
-		"watch-electron": "cd server && tsc-watch --project . --outDir ../build/server --onSuccess \"cross-env SERVER_PORT=50500 electron ../build/server/electron.js\"",
+		"watch-electron": "cd server && tsc-watch --project . --outDir ../build/server --onSuccess \"electron ../build/server/electron.js\"",
 		"electron": "concurrently \"cross-env BROWSER=none yarn front\" \"wait-on http://localhost:50501 && yarn watch-electron\"",
-		"build:front": "set PUBLIC_URL=./&& react-scripts build",
-		"build:server": "cd server && tsc -p tsconfig.json",
-		"build": "yarn build:front && yarn build:api",
-		"obfuscate": "javascript-obfuscator ./backend/electron/main.js --string-array true --string-array-encoding rc4 --output ./backend/electron/main.js --compact true --self-defending false",
-		"build:compiler": "cd compiler && tsc -p tsconfig.json",
-		"compile": "yarn build && yarn obfuscate && yarn build:compiler && electron ./compiler/compile.js",
+		"build-front": "cross-env PUBLIC_URL=./&& react-scripts build",
+		"build-server": "cd server && tsc -p tsconfig.json",
+		"build": "yarn build-front && yarn build-server",
+		"obfuscate": "javascript-obfuscator ./build/server/electron/main.js --string-array true --string-array-encoding rc4 --output ./build/server/electron/main.js --compact true --self-defending false",
+		"build:compiler": "cd jsc-compile && tsc -p tsconfig.json",
+		"compile": "yarn build && yarn obfuscate && yarn build:compiler && electron ./jsc-compile/compile.js",
 		"electron:pack": "yarn compile && electron-builder --windows --x64"
 	},
 	"eslintConfig": {

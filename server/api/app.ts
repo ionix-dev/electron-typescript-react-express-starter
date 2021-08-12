@@ -1,7 +1,7 @@
 import express from "express";
-import { AddressInfo } from "net";
+import { SERVER_PORT } from "../config/config";
 
 const app = express();
-const listener = app.listen(process.env.SERVER_PORT);
-const { port } = listener.address() as AddressInfo;
-console.log(`Server is listening on port: ${port}`);
+app.listen(SERVER_PORT, () => {
+	console.log(`Server is listening on port: ${SERVER_PORT}`);
+});
