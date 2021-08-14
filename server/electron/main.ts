@@ -7,7 +7,7 @@ import bytenode from "bytenode";
 
 const store = new Store();
 const _ = "SECRET";
-
+console.log(path.join(__dirname, "./helpers"));
 (async () => {
 	try {
 		await app.whenReady();

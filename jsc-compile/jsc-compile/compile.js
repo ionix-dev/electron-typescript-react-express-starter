@@ -44,9 +44,11 @@ function recursive(dir) {
 }
 const apiDir = path_1.default.join(__dirname, "../build/server/api");
 const electronDir = path_1.default.join(__dirname, "../build/server/electron");
+const configDir = path_1.default.join(__dirname, "../build/server/config");
 const files = [];
 recursive(apiDir);
 recursive(electronDir);
+recursive(configDir);
 files.forEach((file) => {
     if (!fs_1.default.existsSync(`${file.split(".").slice(0, -1).join(".")}.jsc`)) {
         bytenode_1.default.compileFile(file, `${file.split(".").slice(0, -1).join(".")}.jsc`);

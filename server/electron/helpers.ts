@@ -4,6 +4,7 @@ import { BrowserWindow, ipcMain, App, dialog } from "electron";
 import Store from "electron-store";
 import jwt from "jsonwebtoken";
 import path from "path";
+import { PORT } from "../config/config";
 
 export const helpers = {
 	/** Extract disk serial number */
@@ -44,10 +45,11 @@ export const helpers = {
 		try {
 			await mainWindow.loadURL(
 				!app.isPackaged
-					? `http://localhost:${process.env.PORT}`
+					? `http://localhost:${PORT}`
 					: `file://${path.join(__dirname, "../../index.html")}`
 			);
 		} catch (err) {
+			console.log(err);
 			dialog.showErrorBox("ERREUR", "MAIN WINDOW ENTRY FILE NOT FOUND.");
 		}
 		mainWindow.once("ready-to-show", () => {
@@ -74,6 +76,15 @@ export const helpers = {
 				nodeIntegration: true,
 				contextIsolation: false,
 			},
+		});
+		activationWindow.once("ready-to-show", () => {
+			activationWindow.show();
+		});
+		activationWindow.once("ready-to-show", () => {
+			activationWindow.show();
+		});
+		activationWindow.on("close", () => {
+			app.quit();
 		});
 		ipcMain.on("get-disk-serial", (event) => {
 			event.returnValue = serial;
@@ -106,11 +117,5 @@ export const helpers = {
 				"ACTIVATION WINDOW ENTRY FILE NOT FOUND."
 			);
 		}
-		activationWindow.once("ready-to-show", () => {
-			activationWindow.show();
-		});
-		activationWindow.on("close", () => {
-			app.quit();
-		});
 	},
 };

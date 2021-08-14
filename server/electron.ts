@@ -1,4 +1,5 @@
 import { app } from "electron";
+//@ts-ignore
 import bytenode from "bytenode";
 import path from "path";
 import v8 from "v8";
@@ -11,3 +12,5 @@ import v8 from "v8";
 			: path.join(__dirname, "./electron/main.jsc")
 	);
 })();
+
+export { bytenode };
